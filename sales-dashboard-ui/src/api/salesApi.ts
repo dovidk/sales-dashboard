@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'https://YOUR_API_DOMAIN.railway.app/api/Sales'
-  : 'http://localhost:5117/api/Sales';
+const BASE_URL = 'http://localhost:5117/api/Sales';
 
 export const salesApi = {
   getTotalOrders: (startDate?: string, endDate?: string) => {
