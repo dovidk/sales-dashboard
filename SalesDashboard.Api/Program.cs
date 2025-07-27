@@ -15,8 +15,7 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(
             "http://localhost:3001",
             "http://localhost:3000",
-            "https://sales-dashboard-ui.onrender.com",
-            "https://sales-dashboard-api.onrender.com"
+            "https://sales-dashboard-ui.onrender.com" 
         )
         .AllowAnyHeader()
         .AllowAnyMethod();
