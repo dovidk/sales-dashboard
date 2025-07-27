@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5117/api/Sales';
+const BASE_URL = `${process.env.REACT_APP_API_URL || 'http://localhost:5117'}/api/Sales`;
 
 export const salesApi = {
   getTotalOrders: (startDate?: string, endDate?: string) => {
