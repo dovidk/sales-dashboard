@@ -12,8 +12,9 @@ services:
           name: sales-dashboard-db
           property: connectionString
 
-  - type: static
+  - type: web
     name: sales-dashboard-ui
+    runtime: static
     rootDir: ./sales-dashboard-ui
     buildCommand: npm ci && npm run build
     staticPublishPath: ./build
