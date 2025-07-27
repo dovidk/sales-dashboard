@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: sales-dashboard-api
+    runtime: dotnet
+    rootDir: ./SalesDashboard.Api
+    buildCommand: dotnet publish -c Release -o out
+    startCommand: dotnet out/SalesDashboard.Api.dll
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sales-dashboard-db
+          property: connectionString
+
+  - type: web
+    name: sales-dashboard-ui
+    runtime: node
+    rootDir: ./sales-dashboard-ui
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://sales-dashboard-api.onrender.com
+
+databases:
+  - name: sales-dashboard-db
+    databaseName: salesdb
+    user: salesuser
