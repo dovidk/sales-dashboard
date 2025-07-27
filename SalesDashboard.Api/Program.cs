@@ -22,6 +22,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Database connection configuration
 string connectionString;
 if (builder.Environment.IsDevelopment())
 {
@@ -31,21 +32,20 @@ if (builder.Environment.IsDevelopment())
 else
 {
     // Parse Render's DATABASE_URL environment variable
-  // Parse Render's DATABASE_URL environment variable
-var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-var databaseUri = new Uri(databaseUrl!);
-var userInfo = databaseUri.UserInfo.Split(':');
+    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+    var databaseUri = new Uri(databaseUrl!);
+    var userInfo = databaseUri.UserInfo.Split(':');
 
-// Use default PostgreSQL port if none specified
-var port = databaseUri.Port == -1 ? 5432 : databaseUri.Port;
+    // Use default PostgreSQL port if none specified
+    var dbPort = databaseUri.Port == -1 ? 5432 : databaseUri.Port;
 
-connectionString = $"Host={databaseUri.Host};" +
-                  $"Port={port};" +
-                  $"Database={databaseUri.LocalPath.TrimStart('/')};" +
-                  $"Username={userInfo[0]};" +
-                  $"Password={userInfo[1]};" +
-                  $"SSL Mode=Require;" +
-                  $"Trust Server Certificate=true";
+    connectionString = $"Host={databaseUri.Host};" +
+                      $"Port={dbPort};" +
+                      $"Database={databaseUri.LocalPath.TrimStart('/')};" +
+                      $"Username={userInfo[0]};" +
+                      $"Password={userInfo[1]};" +
+                      $"SSL Mode=Require;" +
+                      $"Trust Server Certificate=true";
 }
 
 builder.Services.AddDbContext<SalesDashboardContext>(options =>
@@ -60,11 +60,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowReactApp");
-
 app.UseAuthorization();
 app.MapControllers();
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-app.Urls.Add($"http://0.0.0.0:{port}");
+// Configure app port for Render deployment
+var appPort = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+app.Urls.Add($"http://0.0.0.0:{appPort}");
 
 app.Run();
